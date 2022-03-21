@@ -9,8 +9,8 @@ namespace _2DGame
 {
     internal class Player
     {
-        public int width = 30;
-        public int height = 10;
+        public int width = 20;
+        public int height = 20;
         public int speed = 6;
         public int x, y;
 

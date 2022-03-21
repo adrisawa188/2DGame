@@ -24,13 +24,18 @@ namespace _2DGame
         public GameScreen()
         {
             InitializeComponent();
-            gameTimer.Enabled = true;
-
-            hero = new Player(100, 100);
-
-            screenSize = new Size(this.Width, this.Height);
+            InitializeGame();
         }
 
+        public void InitializeGame()
+        {
+                gameTimer.Enabled = true;
+
+                hero = new Player(100, 300);
+
+                screenSize = new Size(this.Width, this.Height);        
+        }
+        
         private void GameScreen_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             switch (e.KeyCode)

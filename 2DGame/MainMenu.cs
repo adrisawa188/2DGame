@@ -21,5 +21,10 @@ namespace _2DGame
         {
             Form1.ChangeScreen(this, new GameScreen());
         }
+
+        private void exitButton_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

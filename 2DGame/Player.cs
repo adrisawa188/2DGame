@@ -11,10 +11,8 @@ namespace _2DGame
     {
         public int width = 20;
         public int height = 20;
-        public int speed = 6;
+        public int speed = 4;
         public int x, y;
-
-
 
         public Player(int _x, int _y)
         {

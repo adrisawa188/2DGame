@@ -20,11 +20,15 @@ namespace _2DGame
         bool rightArrowDown = false;
         bool leftArrowDown = false;
 
+        int score = 0;
+
         Random randGen = new Random();
 
         List<Enemy> enemies = new List<Enemy>();
 
         Size screenSize;
+
+        int spawnRate = 3;
 
         public GameScreen()
         {
@@ -80,22 +84,14 @@ namespace _2DGame
         }   
         
         public void NewEnemy()
-        {
-         
-
-
+        {        
             int randValue = randGen.Next(0, 101);
 
-            if (randValue < 10)
+            if (randValue < spawnRate)
             {
-                int x = randGen.Next(150, screenSize.Width - 150);
-                Enemy en = new Enemy(x, 30, 0, 8);
-                enemies.Add(en);
-
-                //x = randGen.Next(10, this.Height - 60);                             
-                //leftBalls.Add(new Rectangle(0, x, ballSize, ballSize));
-
-
+                int x = randGen.Next(150, screenSize.Width - 30);
+                Enemy en = new Enemy(x, -50, 0, 8);
+                enemies.Add(en);  
             }
         }
 
@@ -130,7 +126,36 @@ namespace _2DGame
                 hero.Move("down", screenSize);
             }
 
+            DifficultyUp();
+
+            //EnemeyWallColision();
+
             Refresh();
+        }
+
+        public void DifficultyUp()
+        {
+            // If player touches far wall, set them back to defualt position and increase spawn rate of enemy 
+            if (hero.x == screenSize.Width - 20)
+            {
+                hero = new Player(20, 300);
+                spawnRate++;
+                score++;
+                scoreLabel.Text = $"Score: {score}";
+            }
+        }
+
+        public void EnemeyWallColision()
+        {
+            //chech if enemy has reached bottom edge 
+            foreach (Enemy enemy in enemies)
+            {
+                if (enemy.y > this.Width)
+                {
+                    enemies.Remove(enemy);
+                    break; 
+                }
+            }
         }
 
         private void GameScreen_Paint(object sender, PaintEventArgs e)

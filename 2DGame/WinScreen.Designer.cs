@@ -1,13 +1,13 @@
 ﻿namespace _2DGame
 {
-    partial class Form1
+    partial class WinScreen
     {
-        /// <summary>
+        /// <summary> 
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
+        /// <summary> 
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
@@ -20,31 +20,40 @@
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
+        #region Component Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
+        /// <summary> 
+        /// Required method for Designer support - do not modify 
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
+            this.menuButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // Form1
+            // menuButton
+            // 
+            this.menuButton.Location = new System.Drawing.Point(239, 273);
+            this.menuButton.Name = "menuButton";
+            this.menuButton.Size = new System.Drawing.Size(120, 47);
+            this.menuButton.TabIndex = 0;
+            this.menuButton.Text = "button1";
+            this.menuButton.UseVisualStyleBackColor = true;
+            // 
+            // WinScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(600, 600);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "Form1";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form1";
+            this.Controls.Add(this.menuButton);
+            this.Name = "WinScreen";
+            this.Size = new System.Drawing.Size(600, 600);
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        private System.Windows.Forms.Button menuButton;
     }
 }
-

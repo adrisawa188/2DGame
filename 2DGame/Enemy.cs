@@ -25,6 +25,6 @@ namespace _2DGame
         public void Move(Size ss)
         {
             y += ySpeed;
-        }
+        }        
     }
 }

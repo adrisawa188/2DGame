@@ -60,6 +60,8 @@ namespace _2DGame
                     y = ss.Height - height;
                 }
             }
+
+
         }
     }
 }

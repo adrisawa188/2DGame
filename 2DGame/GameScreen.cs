@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace _2DGame
 {
@@ -20,11 +21,12 @@ namespace _2DGame
         bool rightArrowDown = false;
         bool leftArrowDown = false;
 
-        int score = 0;
+       public static int score = 0;
 
         Random randGen = new Random();
 
-        List<Enemy> enemies = new List<Enemy>();
+        List<Enemy> downEnemies = new List<Enemy>();
+        List<Enemy> upEnemies = new List<Enemy>();
 
         Size screenSize;
 
@@ -83,7 +85,7 @@ namespace _2DGame
             }
         }   
         
-        public void NewEnemy()
+        public void NewDownEnemy()
         {        
             int randValue = randGen.Next(0, 101);
 
@@ -91,21 +93,83 @@ namespace _2DGame
             {
                 int x = randGen.Next(150, screenSize.Width - 30);
                 Enemy en = new Enemy(x, -50, 0, 8);
-                enemies.Add(en);  
+                downEnemies.Add(en);  
             }
         }
 
-        
-
-        private void gameTimer_Tick(object sender, EventArgs e)
+        public void NewUpEnemy()
         {
-            NewEnemy(); 
+            int randValue = randGen.Next(0, 101);
 
-            foreach (Enemy en in enemies)
+            if (score > 4)
             {
-                en.Move(screenSize);
+                if (randValue < spawnRate - 5)
+                {
+                    int x = randGen.Next(150, screenSize.Width - 30);
+                    Enemy en = new Enemy(x, 650, 0, -8);
+                    upEnemies.Add(en);
+                }
+            }
+        }
+
+        public void DifficultyUp()
+        {
+            // If player touches far wall, set them back to defualt position and increase spawn rate of enemy 
+            if (hero.x == screenSize.Width - 20)
+            {
+                hero = new Player(20, 300);
+                spawnRate++;
+                score++;
+                scoreLabel.Text = $"Score: {score}";
+            }
+        }
+
+        public void EnemeyWallColision()
+        {
+            //chech if enemy has reached bottom edge 
+            foreach (Enemy enemy in downEnemies)
+            {
+                if (enemy.y > this.Width)
+                {
+                    downEnemies.Remove(enemy);
+                    break;
+                }
             }
 
+            foreach (Enemy enemy in upEnemies)
+            {
+                if (enemy.y < -50)
+                {
+                    upEnemies.Remove(enemy);
+                    break;
+                }
+            }
+        }
+
+        public void HeroEnemyColision()
+        {
+            foreach (Enemy en in downEnemies)
+            {
+                if (en.Collision(hero))
+                {
+                    Thread.Sleep(1000); 
+                    gameTimer.Enabled = false;
+                    Form1.ChangeScreen(this, new ScoreScreen());      
+                }
+            }
+            foreach (Enemy en in upEnemies)
+            {
+                if (en.Collision(hero))
+                {
+                    Thread.Sleep(1000);
+                    gameTimer.Enabled = false;
+                    Form1.ChangeScreen(this, new ScoreScreen());
+                }
+            }
+        }
+
+        public void PlayerMovement()
+        {
             if (leftArrowDown == true)
             {
                 hero.Move("left", screenSize);
@@ -125,44 +189,51 @@ namespace _2DGame
             {
                 hero.Move("down", screenSize);
             }
+        }
+
+        public void EnemyMovement()
+        {
+            foreach (Enemy en in downEnemies)
+            {
+                en.Move(screenSize);
+            }
+
+            foreach (Enemy en in upEnemies)
+            {
+                en.Move(screenSize);
+            }
+        }
+
+        private void gameTimer_Tick(object sender, EventArgs e)
+        {
+            NewDownEnemy();
+            
+            NewUpEnemy();
+
+            HeroEnemyColision();
+
+            PlayerMovement();
+
+            EnemyMovement();
 
             DifficultyUp();
 
-            //EnemeyWallColision();
+            EnemeyWallColision();
 
             Refresh();
         }
 
-        public void DifficultyUp()
-        {
-            // If player touches far wall, set them back to defualt position and increase spawn rate of enemy 
-            if (hero.x == screenSize.Width - 20)
-            {
-                hero = new Player(20, 300);
-                spawnRate++;
-                score++;
-                scoreLabel.Text = $"Score: {score}";
-            }
-        }
-
-        public void EnemeyWallColision()
-        {
-            //chech if enemy has reached bottom edge 
-            foreach (Enemy enemy in enemies)
-            {
-                if (enemy.y > this.Width)
-                {
-                    enemies.Remove(enemy);
-                    break; 
-                }
-            }
-        }
-
+ 
         private void GameScreen_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.FillRectangle(Brushes.DodgerBlue, hero.x, hero.y, hero.width, hero.height);
 
-            foreach (Enemy en in enemies)
+            foreach (Enemy en in downEnemies)
+            {
+                e.Graphics.FillRectangle(Brushes.White, en.x, en.y, en.xSize, en.ySize);
+            }
+
+            foreach (Enemy en in upEnemies)
             {
                 e.Graphics.FillRectangle(Brushes.White, en.x, en.y, en.xSize, en.ySize);
             }

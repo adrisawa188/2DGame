@@ -41,7 +41,7 @@
             this.nameLabel.Name = "nameLabel";
             this.nameLabel.Size = new System.Drawing.Size(116, 61);
             this.nameLabel.TabIndex = 6;
-            this.nameLabel.Text = "2D Game";
+            this.nameLabel.Text = "Dodger";
             this.nameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // exitButton

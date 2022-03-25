@@ -15,6 +15,13 @@ namespace _2DGame
         public ScoreScreen()
         {
             InitializeComponent();
+
+            scoreLabel.Text = $"Your Score: {GameScreen.score}";
+        }
+
+        private void mainMenuButton_Click(object sender, EventArgs e)
+        {
+            Form1.ChangeScreen(this, new MainMenu());
         }
     }
 }

@@ -14,7 +14,7 @@ namespace _2DGame
         public int xSpeed, ySpeed;
         public int x, y;
 
-        public Enemy (int _x, int _y, int _xSpeed, int _ySpeed)
+        public Enemy(int _x, int _y, int _xSpeed, int _ySpeed)
         {
             x = _x;
             y = _y;
@@ -25,6 +25,21 @@ namespace _2DGame
         public void Move(Size ss)
         {
             y += ySpeed;
-        }        
+        }
+
+        public bool Collision(Player p)
+        {
+            //chaseball collion with player
+            Rectangle enemyRec = new Rectangle(x, y, xSize, ySize);
+            Rectangle playerRec = new Rectangle(p.x, p.y, p.width, p.height);
+
+            if (enemyRec.IntersectsWith(playerRec))
+            {
+                playerRec.X = x;    
+                playerRec.Y = y;    
+                return true;
+            }
+            return false;
+        }
     }
 }

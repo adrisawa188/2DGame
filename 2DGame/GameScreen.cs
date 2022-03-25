@@ -41,7 +41,7 @@ namespace _2DGame
         public void InitializeGame()
         {
             gameTimer.Enabled = true;
-
+            score = 0;
             hero = new Player(20, 300);
             screenSize = new Size(this.Width, this.Height);      
           

@@ -20,8 +20,9 @@ namespace _2DGame
         bool downArrowDown = false;
         bool rightArrowDown = false;
         bool leftArrowDown = false;
+        bool pDown = false;
 
-       public static int score = 0;
+        public static int score = 0;
 
         Random randGen = new Random();
 
@@ -43,10 +44,18 @@ namespace _2DGame
             gameTimer.Enabled = true;
             score = 0;
             hero = new Player(20, 300);
-            screenSize = new Size(this.Width, this.Height);      
-          
+            screenSize = new Size(this.Width, this.Height);
+
+            resumeButton.Enabled = false;
+            resumeButton.Visible = false;
+
+            menuButton.Enabled = false;
+            menuButton.Visible = false;
+
+            //pauseLabel.Enabled = false;
+            pauseLabel.Visible = false;
         }
-        
+
         private void GameScreen_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             switch (e.KeyCode)
@@ -62,6 +71,9 @@ namespace _2DGame
                     break;
                 case Keys.Down:
                     downArrowDown = true;
+                    break;
+                case Keys.P:                   
+                    pDown = true;
                     break;
             }
         }
@@ -82,18 +94,21 @@ namespace _2DGame
                 case Keys.Down:
                     downArrowDown = false;
                     break;
+                case Keys.P:
+                    pDown = false;
+                    break;
             }
-        }   
-        
+        }
+
         public void NewDownEnemy()
-        {        
+        {
             int randValue = randGen.Next(0, 101);
 
             if (randValue < spawnRate)
             {
                 int x = randGen.Next(150, screenSize.Width - 30);
                 Enemy en = new Enemy(x, -50, 0, 8);
-                downEnemies.Add(en);  
+                downEnemies.Add(en);
             }
         }
 
@@ -152,9 +167,9 @@ namespace _2DGame
             {
                 if (en.Collision(hero))
                 {
-                    Thread.Sleep(1000); 
+                    Thread.Sleep(1000);
                     gameTimer.Enabled = false;
-                    Form1.ChangeScreen(this, new ScoreScreen());      
+                    Form1.ChangeScreen(this, new ScoreScreen());
                 }
             }
             foreach (Enemy en in upEnemies)
@@ -204,6 +219,22 @@ namespace _2DGame
             }
         }
 
+        public void Pause()
+        {
+            if (pDown == true)
+            {
+             gameTimer.Enabled = false;
+
+             resumeButton.Enabled = true;
+             resumeButton.Visible = true;
+
+             menuButton.Enabled = true;
+             menuButton.Visible = true;
+
+             pauseLabel.Visible = true;             
+            }          
+        }
+
         private void gameTimer_Tick(object sender, EventArgs e)
         {
             NewDownEnemy();
@@ -219,6 +250,8 @@ namespace _2DGame
             DifficultyUp();
 
             EnemeyWallColision();
+
+            Pause();
 
             Refresh();
         }
@@ -237,6 +270,23 @@ namespace _2DGame
             {
                 e.Graphics.FillRectangle(Brushes.White, en.x, en.y, en.xSize, en.ySize);
             }
+        }
+
+        private void resumeButton_Click(object sender, EventArgs e)
+        {
+            gameTimer.Enabled = true;
+            resumeButton.Enabled = false;
+            resumeButton.Visible = false;
+
+            menuButton.Enabled = false;
+            menuButton.Visible = false;
+            pauseLabel.Visible = false;            
+            this.Focus();          
+        }
+
+        private void menuButton_Click(object sender, EventArgs e)
+        {
+            Form1.ChangeScreen(this, new MainMenu());
         }
     }
 }

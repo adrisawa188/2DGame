@@ -274,13 +274,21 @@ namespace _2DGame
 
         private void resumeButton_Click(object sender, EventArgs e)
         {
+            upArrowDown = false;
+            downArrowDown = false;
+            rightArrowDown = false;
+            leftArrowDown = false;
+
             gameTimer.Enabled = true;
             resumeButton.Enabled = false;
             resumeButton.Visible = false;
 
             menuButton.Enabled = false;
             menuButton.Visible = false;
-            pauseLabel.Visible = false;            
+            pauseLabel.Visible = false;
+
+        
+
             this.Focus();          
         }
 
